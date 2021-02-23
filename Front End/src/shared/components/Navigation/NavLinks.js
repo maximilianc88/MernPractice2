@@ -25,6 +25,11 @@ const auth = useContext(AuthContext);
     <button onClick={auth.logout}>LOGOUT</button>
 </li>
 }
+{auth.isLoggedIn && 
+<li>
+    <button onClick={auth.deleteUser}>Delete User</button>
+</li>
+}
     </ul>
 };
 
