@@ -1,12 +1,15 @@
 import React, { useContext, useState } from "react";
+
 import { NavLink } from "react-router-dom";
 import Button from "../FormElements/Button";
 import Modal from "../UIElements/Modal";
-
+import ErrorModal from "../UIElements/ErrorModal";
 import { AuthContext } from "../../context/auth-context";
+import { useHttpClient } from "../../hooks/http-hook";
 import "./NavLinks.css";
 
 const NavLinks = (props) => {
+  const { error, sendRequest, clearError } = useHttpClient();
   const auth = useContext(AuthContext);
   const [showConfirmDeleteUserModal, setShowConfirmDeleteUserModal] = useState(
     false
@@ -20,13 +23,29 @@ const NavLinks = (props) => {
     setShowConfirmDeleteUserModal(false);
   };
 
-  const confirmDeleteUserHandler = () => {
+  const confirmDeleteUserHandler = async () => {
     setShowConfirmDeleteUserModal(false);
     console.log("Deleting User Profile!");
+    try {
+      await sendRequest(
+        process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
+        "DELETE",
+        null,
+        {
+          Authorization: "Bearer " + auth.token,
+        }
+      );
+    } catch (err) {};
+  };
+
+  const confirmAndDelete = () => {
+    confirmDeleteUserHandler();
+    auth.logout();
   };
 
   return (
     <React.Fragment>
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showConfirmDeleteUserModal}
         onCancel={cancelDeleteUserHandler}
@@ -35,7 +54,7 @@ const NavLinks = (props) => {
         footer={
           <React.Fragment>
             <Button inverse onClick={cancelDeleteUserHandler}>CANCEL</Button>
-            <Button danger onClick={confirmDeleteUserHandler}>DELETE USER PROFILE</Button>
+            <Button danger onClick={confirmAndDelete}>DELETE USER PROFILE</Button>
           </React.Fragment>
         }
       >
