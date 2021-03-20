@@ -15,6 +15,7 @@ const Users = React.lazy(() => import("./user/pages/Users"));
 const NewPlace = React.lazy(() => import("./places/pages/NewPlace"));
 const UserPlaces = React.lazy(() => import("./places/pages/UserPlaces"));
 const UpdatePlace = React.lazy(() => import("./places/pages/UpdatePlace"));
+const Account = React.lazy(() => import("./user/pages/Account"));
 const Auth = React.lazy(() => import("./user/pages/Auth"));
 
 const App = () => {
@@ -36,6 +37,9 @@ const App = () => {
         </Route>
         <Route path="/places/:placeId">
           <UpdatePlace />
+        </Route>
+        <Route path="/:userId/account" >
+          <Account />
         </Route>
         <Redirect to="/" />
       </Switch>

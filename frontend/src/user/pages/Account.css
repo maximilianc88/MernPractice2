@@ -1,0 +1,22 @@
+.account_card {
+    display: flex;
+    justify-content:space-between;
+    margin: 0 auto;
+    width: 90%;
+    max-width: 40rem;
+    border-radius: 6px;
+    background: #292929;
+    color: white;
+}
+
+.account_card button{
+    border-radius: 100%;
+    max-height: 50%;
+    height: 7rem;
+    font-weight: bold;
+}
+
+.account_card h2{
+    max-height: 50%;
+    padding-top: 1rem;
+}
