@@ -1,4 +1,4 @@
-.account_card {
+.account_card.card{
     display: flex;
     justify-content:space-between;
     margin: 0 auto;

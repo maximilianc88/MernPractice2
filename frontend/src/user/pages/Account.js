@@ -7,46 +7,46 @@ import { AuthContext } from "../../shared/context/auth-context";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 import "./Account.css";
 
-const Account = (props) => {
+const Account = () => {
   const auth = useContext(AuthContext);
   const [showConfirmDeleteUserModal, setShowConfirmDeleteUserModal] = useState(
     false
   );
+  const [deletedUserID, setDeletedUserID] = useState();
 
   const { error, sendRequest, clearError } = useHttpClient();
 
   const showDeleteUserWarningHandler = () => {
+    setDeletedUserID(auth.userId);
     setShowConfirmDeleteUserModal(true);
   };
 
   const cancelDeleteUserHandler = () => {
     setShowConfirmDeleteUserModal(false);
+    setDeletedUserID();
   };
 
-  // In production, Cache & Cookies or local storage appears to be sometimes preventing the delete API call from running.
   const confirmDeleteUserHandler = async () => {
-    setShowConfirmDeleteUserModal(false);
-    console.log("Deleting User Profile!");
+    console.log("Deleted user ID = " + deletedUserID);
     try {
+      setShowConfirmDeleteUserModal(false);
+      console.log("Deleting User Profile!");
       await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
+        process.env.REACT_APP_BACKEND_URL + `/users/${deletedUserID}`,
         "DELETE",
         null,
         {
           Authorization: "Bearer " + auth.token,
         }
       );
-    } catch (err) {}
-  };
-
-  const confirmAndDelete = () => {
-    confirmDeleteUserHandler();
+      setDeletedUserID();
+    } catch (err) {};
     auth.logout();
   };
 
   return (
     <React.Fragment>
-    <ErrorModal error={error} onClear={clearError} />
+      <ErrorModal error={error} onClear={clearError} />
       <Modal
         show={showConfirmDeleteUserModal}
         onCancel={cancelDeleteUserHandler}
@@ -57,7 +57,7 @@ const Account = (props) => {
             <Button inverse onClick={cancelDeleteUserHandler}>
               CANCEL
             </Button>
-            <Button danger onClick={confirmAndDelete}>
+            <Button danger onClick={confirmDeleteUserHandler}>
               DELETE USER PROFILE
             </Button>
           </React.Fragment>
