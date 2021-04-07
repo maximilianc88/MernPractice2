@@ -15,7 +15,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 import "./PlaceForm.css";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
-const NewPlace = () => {
+const NewPlant = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
@@ -28,10 +28,6 @@ const NewPlace = () => {
         value: "",
         isValid: false,
       },
-      address: {
-        value: "",
-        isValid: false,
-      },
       image: {
         value: null,
         isValid: false,
@@ -41,15 +37,14 @@ const NewPlace = () => {
   );
   const history = useHistory();
 
-  const placeSubmitHandler = async (event) => {
+  const plantSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       const formData = new FormData();
       formData.append("title", formState.inputs.title.value);
       formData.append("description", formState.inputs.description.value);
-      formData.append("address", formState.inputs.address.value);
       formData.append("image", formState.inputs.image.value);
-      await sendRequest(process.env.REACT_APP_BACKEND_URL + "/places", "POST", formData, {
+      await sendRequest(process.env.REACT_APP_BACKEND_URL + "/plants", "POST", formData, {
         Authorization: "Bearer " + auth.token
       });
       history.push("/");
@@ -59,7 +54,7 @@ const NewPlace = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="place-form" onSubmit={placeSubmitHandler}>
+      <form className="place-form" onSubmit={plantSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="title"
@@ -78,25 +73,17 @@ const NewPlace = () => {
           errorText="Please enter a valid description (at least 5 characters)."
           onInput={inputHandler}
         />
-        <Input
-          id="address"
-          label="Address"
-          element="input"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid address."
-          onInput={inputHandler}
-        />
         <ImageUpload
           id="image"
           onInput={inputHandler}
           errorText="Please provide an image"
         />
         <Button type="submit" disabled={!formState.isValid}>
-          ADD PLACE
+          ADD PLANT
         </Button>
       </form>
     </React.Fragment>
   );
 };
 
-export default NewPlace;
+export default NewPlant;
