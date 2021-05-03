@@ -15,11 +15,11 @@ import { useHttpClient } from "../../shared/hooks/http-hook";
 import { AuthContext } from '../../shared/context/auth-context';
 import "./PlaceForm.css";
 
-const UpdatePlace = () => {
+const UpdatePlant = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const [loadedPlace, setLoadedPlace] = useState();
-  const placeId = useParams().placeId;
+  const [loadedPlant, setLoadedPlant] = useState();
+  const plantId = useParams().plantId;
   const history = useHistory();
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -37,20 +37,20 @@ const UpdatePlace = () => {
   );
 
   useEffect(() => {
-    const fetchPlace = async () => {
+    const fetchPlant = async () => {
       try {
         const responseData = await sendRequest(
-          `${process.env.REACT_APP_BACKEND_URL}/places/${placeId}`
+          `${process.env.REACT_APP_BACKEND_URL}/plants/${plantId}`
         );
-        setLoadedPlace(responseData.place);
+        setLoadedPlant(responseData.plant);
         setFormData(
           {
             title: {
-              value: responseData.place.title,
+              value: responseData.plant.title,
               isValid: true,
             },
             description: {
-              value: responseData.place.description,
+              value: responseData.plant.description,
               isValid: true,
             }
           },
@@ -58,14 +58,14 @@ const UpdatePlace = () => {
         );
       } catch (err) {}
     };
-    fetchPlace();
-  }, [sendRequest, placeId, setFormData]);
+    fetchPlant();
+  }, [sendRequest, plantId, setFormData]);
 
-  const placeUpdateSubmitHandler = async (event) => {
+  const plantUpdateSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       await sendRequest(
-        `${process.env.REACT_APP_BACKEND_URL}/places/${placeId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/plants/${plantId}`,
         "PATCH",
         JSON.stringify({
           title: formState.inputs.title.value,
@@ -77,7 +77,7 @@ const UpdatePlace = () => {
         },
 
       );
-      history.push('/' + auth.userId + '/places');
+      history.push('/' + auth.userId + '/plants');
     } catch (err) {}
   };
 
@@ -89,11 +89,11 @@ const UpdatePlace = () => {
     );
   }
 
-  if (!loadedPlace && !error) {
+  if (!loadedPlant && !error) {
     return (
       <div className="center">
         <Card>
-          <h2>Could not find place!</h2>
+          <h2>Could not find plant!</h2>
         </Card>
       </div>
     );
@@ -103,8 +103,8 @@ const UpdatePlace = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
 
-      {!isLoading && loadedPlace && (
-        <form className="place-form" onSubmit={placeUpdateSubmitHandler}>
+      {!isLoading && loadedPlant && (
+        <form className="place-form" onSubmit={plantUpdateSubmitHandler}>
           <Input
             id="title"
             element="input"
@@ -113,7 +113,7 @@ const UpdatePlace = () => {
             validators={[VALIDATOR_REQUIRE()]}
             errorText="Please enter a valid title."
             onInput={inputHandler}
-            initialValue={loadedPlace.title}
+            initialValue={loadedPlant.title}
             initialValid={true}
           />
           <Input
@@ -123,11 +123,11 @@ const UpdatePlace = () => {
             validators={[VALIDATOR_MINLENGTH(5)]}
             errorText="Please enter a valid decription (min. 5 characters)."
             onInput={inputHandler}
-            initialValue={loadedPlace.description}
+            initialValue={loadedPlant.description}
             initialValid={true}
           />
           <Button type="submit" disabled={!formState.isValid}>
-            UPDATE PLACE
+            UPDATE PLANT
           </Button>
         </form>
       )}
@@ -135,4 +135,4 @@ const UpdatePlace = () => {
   );
 };
 
-export default UpdatePlace;
+export default UpdatePlant;

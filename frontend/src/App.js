@@ -12,9 +12,9 @@ import { useAuth } from "./shared/hooks/auth-hook";
 import LoadingSpinner from "./shared/components/UIElements/LoadingSpinner";
 
 const Users = React.lazy(() => import("./user/pages/Users"));
-const NewPlace = React.lazy(() => import("./places/pages/NewPlace"));
-const UserPlaces = React.lazy(() => import("./places/pages/UserPlaces"));
-const UpdatePlace = React.lazy(() => import("./places/pages/UpdatePlace"));
+const NewPlant = React.lazy(() => import("./plants/pages/NewPlant"));
+const UserPlants = React.lazy(() => import("./plants/pages/UserPlants"));
+const UpdatePlant = React.lazy(() => import("./plants/pages/UpdatePlant"));
 const Account = React.lazy(() => import("./user/pages/Account"));
 const Auth = React.lazy(() => import("./user/pages/Auth"));
 
@@ -29,14 +29,14 @@ const App = () => {
         <Route path="/" exact>
           <Users />
         </Route>
-        <Route path="/:userId/places">
-          <UserPlaces />
+        <Route path="/:userId/plants">
+          <UserPlants />
         </Route>
-        <Route path="/places/new" exact>
-          <NewPlace />
+        <Route path="/plants/new" exact>
+          <NewPlant />
         </Route>
-        <Route path="/places/:placeId">
-          <UpdatePlace />
+        <Route path="/plants/:plantId">
+          <UpdatePlant />
         </Route>
         <Route path="/:userId/account" >
           <Account />
@@ -50,8 +50,8 @@ const App = () => {
         <Route path="/" exact>
           <Users />
         </Route>
-        <Route path="/:userId/places" exact>
-          <UserPlaces />
+        <Route path="/:userId/plants" exact>
+          <UserPlants />
         </Route>
         <Route path="/auth">
           <Auth />

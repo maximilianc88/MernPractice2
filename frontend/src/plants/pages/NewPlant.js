@@ -15,7 +15,7 @@ import { AuthContext } from "../../shared/context/auth-context";
 import "./PlaceForm.css";
 import { useHttpClient } from "../../shared/hooks/http-hook";
 
-const NewPlace = () => {
+const NewPlant = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
@@ -41,7 +41,7 @@ const NewPlace = () => {
   );
   const history = useHistory();
 
-  const placeSubmitHandler = async (event) => {
+  const plantSubmitHandler = async (event) => {
     event.preventDefault();
     try {
       const formData = new FormData();
@@ -49,7 +49,7 @@ const NewPlace = () => {
       formData.append("description", formState.inputs.description.value);
       formData.append("address", formState.inputs.address.value);
       formData.append("image", formState.inputs.image.value);
-      await sendRequest(process.env.REACT_APP_BACKEND_URL + "/places", "POST", formData, {
+      await sendRequest(process.env.REACT_APP_BACKEND_URL + "/plants", "POST", formData, {
         Authorization: "Bearer " + auth.token
       });
       history.push("/");
@@ -59,7 +59,7 @@ const NewPlace = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <form className="place-form" onSubmit={placeSubmitHandler}>
+      <form className="place-form" onSubmit={plantSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
           id="title"
@@ -92,11 +92,11 @@ const NewPlace = () => {
           errorText="Please provide an image"
         />
         <Button type="submit" disabled={!formState.isValid}>
-          ADD PLACE
+          ADD PLANT
         </Button>
       </form>
     </React.Fragment>
   );
 };
 
-export default NewPlace;
+export default NewPlant;
