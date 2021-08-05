@@ -8,4 +8,7 @@
     border-radius: 6px;
     background: white;
   }
-  
+
+  .image-upload, .add-plant-submit {
+padding-left: 10rem;
+  }

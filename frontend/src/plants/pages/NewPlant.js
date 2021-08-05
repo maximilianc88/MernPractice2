@@ -62,9 +62,9 @@ const NewPlant = () => {
       <form className="place-form" onSubmit={plantSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
         <Input
-          id="title"
+          id="name"
           type="text"
-          label="Title"
+          label="Plant name"
           element="input"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid title."
@@ -78,18 +78,11 @@ const NewPlant = () => {
           errorText="Please enter a valid description (at least 5 characters)."
           onInput={inputHandler}
         />
-        <Input
-          id="address"
-          label="Address"
-          element="input"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid address."
-          onInput={inputHandler}
-        />
         <ImageUpload
           id="image"
           onInput={inputHandler}
           errorText="Please provide an image"
+          class="image-upload-button"
         />
         <Button type="submit" disabled={!formState.isValid}>
           ADD PLANT
